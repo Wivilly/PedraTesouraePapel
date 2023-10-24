@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         mButton.setOnClickListener(view -> iniciarJogo());
     }
 
-    privae void iniciarJogo(){
+    private void iniciarJogo(){
         String player1, player2;
         int batalhas = 1;
 
