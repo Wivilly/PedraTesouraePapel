@@ -2,7 +2,6 @@ package br.edu.ifsp.dmo.pedratesouraepapel.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,7 +11,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.w3c.dom.Text;
 
 import br.edu.ifsp.dmo.pedratesouraepapel.Constantes;
 import br.edu.ifsp.dmo.pedratesouraepapel.R;
@@ -45,8 +43,8 @@ public class ConfrontoActivity extends AppCompatActivity {
         if(intent != null){
             Bundle args = intent.getExtras();
             if(args != null){
-                String n1 = args.getString(Constantes.KEW_JOGADOR_1);
-                String n2 = args.getString(Constantes.KEW_JOGADOR_2);
+                String n1 = args.getString(Constantes.KEY_JOGADOR_1);
+                String n2 = args.getString(Constantes.KEY_JOGADOR_2);
                 int nro = args.getInt(Constantes.KEY_RODADAS);
                 confronto = new Confronto(nro,n1,n2);
             }
@@ -63,7 +61,7 @@ public class ConfrontoActivity extends AppCompatActivity {
           if(result.getResultCode() == RESULT_OK){
               Intent intentResultado = result.getData();
               int jogador = intentResultado.getIntExtra(Constantes.KEY_NRO_JOGADOR,0);
-              Coisa coisa = intentResultado.getSerializableExtra(Constantes.KEY_COISA);
+              Coisa coisa = (Coisa) intentResultado.getSerializableExtra(Constantes.KEY_COISA);
               if(jogador == 1){
                   coisaPlayer1 = coisa;
               }
@@ -133,5 +131,12 @@ public class ConfrontoActivity extends AppCompatActivity {
         fecharButton = findViewById(R.id.button_fechar);
         labelP1TextView = findViewById(R.id.label_jogador1);
         labelP2TextView = findViewById(R.id.label_jogador2);
+        resultadoP1TextView = findViewById(R.id.textview_resultado1);
+        resultadoP2TextView = findViewById(R.id.textview_resultado2);
+        anuncioTextView = findViewById(R.id.textview_anuncio);
     }
+
+    private void updateUI(){}
+
+    private void setClickListener(){}
 }

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import br.edu.ifsp.dmo.pedratesouraepapel.Constantes;
 import br.edu.ifsp.dmo.pedratesouraepapel.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item,
-                getResources().getStringArray(R.array.tipo_jogos));
+                getResources().getStringArray(R.array.tipos_jogos));
 
         mSpinner = findViewById(R.id.spinner_jogadas);
         mSpinner.setAdapter(adapter);
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         nome1EditText = findViewById(R.id.edittext_jogador1);
         nome2EditText = findViewById(R.id.edittext_jogador2);
 
-        mButton = findViewById(R.id.button_iniicar);
+        mButton = findViewById(R.id.button_iniciar);
         mButton.setOnClickListener(view -> iniciarJogo());
     }
 
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
-        Intent intent = new Intent(this, ComfrontoActivity.class);
+        Intent intent = new Intent(this, ConfrontoActivity.class);
         Bundle args = new Bundle();
         args.putString(Constantes.KEY_JOGADOR_1, player1);
         args.putString(Constantes.KEY_JOGADOR_2, player2);
