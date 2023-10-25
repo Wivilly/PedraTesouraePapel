@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Pedra Tesoura e Papel"
+rootProject.name = "Pedra-tesoura-papel"
 include(":app")

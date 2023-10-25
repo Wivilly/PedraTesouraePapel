@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="8dp"
-    tools:context=".view.SelecaoActivity">
+    tools:context=".SelecaoActivity">
 
     <Button
         android:id="@+id/buttonPedra"
@@ -23,9 +23,9 @@
         android:layout_height="wrap_content"
         android:text="@string/tesoura"
         app:layout_constraintBottom_toTopOf="@+id/buttonPapel"
-        app:layout_constraintEnd_toEndOf="@+id/buttonPedra"
-        app:layout_constraintStart_toStartOf="@+id/buttonPedra"
-        app:layout_constraintTop_toBottomOf="@+id/buttonPedra"/>
+        app:layout_constraintEnd_toEndOf="@id/buttonPedra"
+        app:layout_constraintStart_toStartOf="@id/buttonPedra"
+        app:layout_constraintTop_toBottomOf="@id/buttonPedra"/>
 
     <Button
         android:id="@+id/buttonPapel"
@@ -33,9 +33,9 @@
         android:layout_height="wrap_content"
         android:text="@string/papel"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/buttonPedra"
-        app:layout_constraintStart_toStartOf="@+id/buttonPedra"
-        app:layout_constraintTop_toBottomOf="@+id/buttonTesoura"/>
+        app:layout_constraintEnd_toEndOf="@id/buttonPedra"
+        app:layout_constraintStart_toStartOf="@id/buttonPedra"
+        app:layout_constraintTop_toBottomOf="@id/buttonTesoura"/>
 
     <TextView
         android:id="@+id/textview_mensagem"
