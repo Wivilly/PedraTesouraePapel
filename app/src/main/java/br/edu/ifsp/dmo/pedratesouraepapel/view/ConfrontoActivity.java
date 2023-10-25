@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -33,6 +34,7 @@ public class ConfrontoActivity extends AppCompatActivity {
     private TextView resultadoP1TextView;
     private TextView resultadoP2TextView;
     private TextView anuncioTextView;
+    private String modoJogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -46,6 +48,7 @@ public class ConfrontoActivity extends AppCompatActivity {
                 String n1 = args.getString(Constantes.KEY_JOGADOR_1);
                 String n2 = args.getString(Constantes.KEY_JOGADOR_2);
                 int nro = args.getInt(Constantes.KEY_RODADAS);
+                modoJogo = args.getString(Constantes.KEY_MODO_JOGO);
                 confronto = new Confronto(nro,n1,n2);
             }
         }
@@ -62,10 +65,13 @@ public class ConfrontoActivity extends AppCompatActivity {
               Intent intentResultado = result.getData();
               int jogador = intentResultado.getIntExtra(Constantes.KEY_NRO_JOGADOR,0);
               Coisa coisa = (Coisa) intentResultado.getSerializableExtra(Constantes.KEY_COISA);
-              if(jogador == 1){
+              if(jogador == 1 && (intentResultado.getSerializableExtra("computer_result") != null)) {
+                  coisaPlayer1 = coisa;
+                  coisaPlayer2 = (Coisa) intentResultado.getSerializableExtra("computer_result");
+              } else if(jogador == 1){
                   coisaPlayer1 = coisa;
               }
-              if(jogador == 2){
+              if (jogador == 2){
                   coisaPlayer2 = coisa;
               }
           }
@@ -75,41 +81,46 @@ public class ConfrontoActivity extends AppCompatActivity {
     private void abrirSelecao(int i){
         Intent intent = new Intent(this, SelecaoActivity.class);
         intent.putExtra(Constantes.KEY_NRO_JOGADOR, i);
-        if(i == 1){
+        intent.putExtra(Constantes.KEY_MODO_JOGO, modoJogo);
+        if (modoJogo.equals("singlePlayer")){
             intent.putExtra(Constantes.KEY_NOME, confronto.getJogador1().getNome());
         }else {
-            intent.putExtra(Constantes.KEY_NOME, confronto.getJogador2().getNome());
+            if (i == 1){
+                intent.putExtra(Constantes.KEY_NOME, confronto.getJogador1().getNome());
+            }else {
+                intent.putExtra(Constantes.KEY_NOME, confronto.getJogador2().getNome());
+            }
         }
         resultLauncher.launch(intent);
     }
 
     public void executarConfronto(){
         Jogador vencedor;
-        if(coisaPlayer1 != null && coisaPlayer2 != null){
+        if (coisaPlayer1 != null && coisaPlayer2 != null){
             vencedor = confronto.novoConfronto(coisaPlayer1, coisaPlayer2);
-            if(vencedor != null){
-                Toast.makeText(this, getString(R.string.winner)+vencedor.getNome(), Toast.LENGTH_SHORT).show();
-            }else{
+            if (vencedor != null){
+                Toast.makeText(this, getString(R.string.winner) + vencedor.getNome(), Toast.LENGTH_SHORT).show();
+            }else {
                 Toast.makeText(this, getString(R.string.empate), Toast.LENGTH_SHORT).show();
             }
             coisaPlayer1 = null;
             coisaPlayer2 = null;
             atualizarPlacar();
             if(!confronto.tem_batalha()){
-                anuciarVencedor(confronto.getVencedor());
-            }else {
-                String jogador;
-                if(coisaPlayer1 == null){
-                    jogador = confronto.getJogador1().getNome();
-                }else {
-                    jogador = confronto.getJogador2().getNome();
-                }
-                Toast.makeText(this, jogador + getString(R.string.choose_gum), Toast.LENGTH_SHORT).show();
+                anunciarVencedor(confronto.getVencedor());
             }
+        }else {
+            String jogador;
+            if (coisaPlayer1 == null){
+                jogador = confronto.getJogador1().getNome();
+            }else {
+                jogador = confronto.getJogador2().getNome();
+            }
+            Toast.makeText(this, jogador + getString(R.string.choose_gum), Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void anuciarVencedor(Jogador vencedor){
+    private void anunciarVencedor(Jogador vencedor){
         String str = confronto.getVencedor().getNome() + getString(R.string.venceu_o_confronto);
         coisa1Button.setVisibility(View.GONE);
         coisa2Button.setVisibility(View.GONE);
@@ -136,7 +147,33 @@ public class ConfrontoActivity extends AppCompatActivity {
         anuncioTextView = findViewById(R.id.textview_anuncio);
     }
 
-    private void updateUI(){}
+    private void updateUI(){
+        if (modoJogo.equals("singlePlayer")){
+            coisa2Button.setVisibility(View.INVISIBLE);
+        }
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null){
+            String title = confronto.getJogador1().getNome() + " x " + confronto.getJogador2().getNome();
+            actionBar.setTitle(title);
+        }
 
-    private void setClickListener(){}
+        labelP1TextView.setText((confronto.getJogador1().getNome()));
+        labelP2TextView.setText(confronto.getJogador2().getNome());
+        atualizarPlacar();
+
+        coisa1Button.setText(confronto.getJogador1().getNome() + getString((R.string.gum_selection)));
+        coisa2Button.setText(confronto.getJogador2().getNome() + getString(R.string.gum_selection));
+    }
+
+    private void setClickListener(){
+        coisa1Button = findViewById(R.id.button_coisa1);
+        coisa2Button = findViewById(R.id.button_coisa2);
+        lutarButton = findViewById(R.id.button_lutar);
+        fecharButton = findViewById(R.id.button_fechar);
+        labelP1TextView = findViewById(R.id.label_jogador1);
+        labelP2TextView = findViewById(R.id.label_jogador2);
+        resultadoP1TextView = findViewById(R.id.textview_resultado1);
+        resultadoP2TextView = findViewById(R.id.textview_resultado2);
+        anuncioTextView = findViewById(R.id.textview_anuncio);
+    }
 }
